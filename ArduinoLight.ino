@@ -1,14 +1,20 @@
 //Include the module so we don't
 //have to use the default Serial
 //so the Arduino can be plugged in
-//to a computer and still use bluetooth
+//to a computer and still use mySerial
 #include "BluetoothSerial.h"
+
+#define USE_BT True
+
+#if USE_BT
+  BluetoothSerial mySerial;
+#else
+  Serial mySerial;
+#endif
 
 //Variable to store input value
 //initialized with arbitrary value
 char k = 'A';
-//Connect the Bluetooth module
-BluetoothSerial bluetooth;
 
 //Define the pin to control the light
 int lightbulb = 2
@@ -20,17 +26,17 @@ void setup()
   //Initialize Serial for debugging purposes
   Serial.begin(9600);
   Serial.println("Serial ready");
-  //Initialize the bluetooth
-  bluetooth.begin("ESP32");
-  bluetooth.println("Bluetooth ready");
+  //Initialize the mySerial
+  mySerial.begin("ESP32");
+  mySerial.println("Bluetooth ready");
 }
 
 void loop()
 {
   //Check for new data
-  if(bluetooth.available()){
+  if(mySerial.available()){
     //Remember new data
-    k = bluetooth.read();
+    k = mySerial.read();
     //Print the data for debugging purposes
     Serial.println(k);
   }
